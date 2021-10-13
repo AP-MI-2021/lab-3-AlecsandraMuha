@@ -25,6 +25,21 @@ def nr_divizori(n):
         if n % i == 0:
             nr+=1
     return nr
+def is_palindrome(n):
+    """
+    Determina daca un numar este palindrom
+    :param n: numar intreg
+    :return: True daca numarul e palindrom, False in caz contrar
+    """
+    x = n
+    inv = 0
+    while x:
+        inv= inv * 10 + x % 10
+        x = x // 10
+    if inv == n:
+        return True
+    return False
+
 def toateelemprime(l):
     '''
     determina daca toate nr. dintr-o lista sunt prime
@@ -44,7 +59,7 @@ def get_longest_all_primes(l):
     subsecventaMax = []
     for i in range(len(l)):
         for j in range(i, len(l)):
-            if toateelemprime(l[i:j+1]) and len(l[i:j+1]) > len(subsecventaMax):
+            if toateelemprime(l[i:j+1]) and len(l[i:j+1]) >= len(subsecventaMax):
                 subsecventaMax = l[i:j+1]
     return subsecventaMax
 def test_get_longest_all_primes():
@@ -77,12 +92,38 @@ def test_get_longest_same_div_count():
     assert get_longest_same_div_count([12,23,5,9,11]) == [23,5]
     assert get_longest_same_div_count([2,2,2,2]) == [2,2,2,2]
     assert get_longest_same_div_count([]) == []
-
+def toateelempalindrom(l):
+    '''
+    determina daca toate nr. dintr-o lista sunt palindroame
+    :param l: lista de nr. intregi
+    :return: True, daca toate nr. din l sunt palindroame sau False, in caz contrar
+    '''
+    for x in l:
+        if is_palindrome(x) == False:
+             return False
+    return True
+def get_longest_all_palindromes(l):
+    '''
+    determina cea mai lunga subsecventa de nr. palindrom
+    :param l: lista de nr. intregi
+    :return: cea mai lunga subsecventa de nr. palindrom  din l
+    '''
+    secventaMax = []
+    for i in range(len(l)):
+        for j in range(i, len(l)):
+            if toateelempalindrom(l[i:j+1]) and len(l[i:j+1]) >= len(secventaMax):
+                secventaMax = l[i:j+1]
+    return secventaMax
+def test_get_longest_all_palindromes():
+    assert get_longest_all_palindromes([212,23,34,85]) == [212]
+    assert get_longest_all_palindromes([121,232,55,95,112]) == [121,232,55]
+    assert get_longest_all_palindromes([]) == []
 def printMenu():
     print("1. Citire lista")
     print("2. Afisare cea mai lunga subsecventa de nr. prime")
     print("3. Afisare cea mai lunga subsecventa de nr. cu acelasi nr de divizori.")
-    print("4. Iesire")
+    print("4. Afisare cea mai lunga subsecventa de nr. care sunt palindroame")
+    print("5. Iesire")
 
 def citireLista():
     l = []
@@ -93,7 +134,7 @@ def citireLista():
 def main():
     test_get_longest_all_primes()
     test_get_longest_same_div_count()
-    l = []
+    test_get_longest_all_palindromes()
     while True:
         printMenu()
         optiune = input("Dati optiunea: ")
@@ -104,11 +145,15 @@ def main():
         elif optiune == "3":
             print(get_longest_same_div_count(l))
         elif optiune == "4":
+            print(get_longest_all_palindromes(l))
+        elif optiune == "5":
             break
         else:
-            print("Optiune gresita! Alege alta optiune!")
+            print("Optiune gresita! Alege alta optiune"
+                  "!")
 
 if __name__ == '__main__':
     test_get_longest_all_primes()
     test_get_longest_same_div_count()
+    test_get_longest_all_palindromes()
 main()
